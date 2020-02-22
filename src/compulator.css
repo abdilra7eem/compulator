@@ -1,0 +1,22 @@
+
+#screen {
+    grid-area: screen;
+    text-align: right;
+}
+
+#Compulator {
+    max-width: 500px;
+    min-width: 200px;
+    min-height: 200px;
+    max-height: 500px;
+    display: grid;
+    grid-template-areas: 
+        '   screen screen  screen  screen'
+        '   op5    op4     op3      op2'
+        '   btn7   btn8    btn9     op1'
+        '   btn4   btn5    btn6     op1'
+        '   btn1   btn2    btn3     op0'
+        '   btn0   btn0    btndot   op0'
+}
+
+
