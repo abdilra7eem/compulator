@@ -5,10 +5,10 @@
 }
 
 #Compulator {
-    max-width: 500px;
-    min-width: 200px;
-    min-height: 200px;
-    max-height: 500px;
+    font-size: 40px;
+    font-weight: bold;
+    width: 100%;
+    height: 100%;
     display: grid;
     grid-template-areas: 
         '   screen screen  screen  screen'
