@@ -21,7 +21,7 @@ function Buttons(props){
       props.values.map((x,i) => <Button clickHandler={props.clickHandler} value={x} key={`op${i}`} myid={`op${i}`} />)
     )
   } else {
-    console.trace("ERROR! unknown type")
+    console.trace("ERROR! unknown button-set type")
   }
 }
 
@@ -40,6 +40,7 @@ function Screen(props){
 function Compulator() {
 
   // Create arrays for the buttons. 'num' represents numbers, and 'ops' represents operations
+  // For performance, set the values of the arrays manually (e.g.: let nums = [0,1,2,3,4,5,6,7,8,9]) instead.
   let nums = Array.from({length: 10}, (v, i) => i);
   nums.push('.');
   let ops = '=+-*/'.split('');
