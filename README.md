@@ -1,9 +1,18 @@
 # compulator
-Simple calculator created with React functional components and React hooks
-This app was developed in one day, and may contain bugs, so be cautious when using it for anything servious.
-This app is provided as is, with no guarantee whatsoever, under LGPL v3.0 license.
-Please read the attached licence.
+Simple calculator created with React functional components and React hooks.
+This app was developed in one day by one person, and may contain bugs (e.g.: limiting the number of digits), so be cautious when using it for anything servious. Use at your own risk.
 
+This app is provided as is, with no guarantee whatsoever, under LGPL v3.0 license. Please read the attached LICENSE file.
+
+The 'Compulator' renders inside the html element with id='compulator'. It can be used as a calculator or as an example for learning React in 2020.
+
+Compulator supports mouse, touch screen and keyboard. It uses functional components, with react useState and useEffect hooks. CSS grid is used for styling.
+
+### Files of interest:
+- compulator.js
+- compulator.css
+
+---
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
