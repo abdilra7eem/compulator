@@ -49,10 +49,12 @@ function Compulator() {
   const [screen, setScreen] = useState(0); // the screen content
   const [memory, setMemory] = useState(0); // the memory contains the previous number
   const [op, setOp] = useState(''); // the previous operator; it's used when the next operator button is pressed
+  const [typing, setTyping] = useState(false); // save the state of the last pressed button: true for numbers, false for operators
 
   // Called by the number buttons
   const numClick = (value) => {
-    if (op === '' || op === 'AC'){
+    console.log(`Number ${value} pressed`);
+    if (typing === true){
       if (!(value==='.' && (screen.toString()).includes('.'))){//Avoid multiple decimal separators
         let newScreen = `${screen}${value}`.replace(/^0+/, ''); // Remove leading zeros
         newScreen = newScreen.startsWith('.') ? "0"+newScreen: newScreen; // Adds a leading zero if 'screen' starts with a decimal separator
@@ -61,38 +63,39 @@ function Compulator() {
     }else if (value !== '.'){
       setScreen(value);
     }
-    setOp('');
+    setTyping(true);
   }
 
   // 'calculate' evaluates the operator and does the calculation
   // parseFloat is used because JS is weakly typed.
   const calculate = ()=>{
-    let result = 0;
+    let res = 0;
+    console.log(`function calculate called with ${memory} ${op} ${screen}`);
     switch(op){
       case ('+' || '='):
-        result = parseFloat(memory) + parseFloat(screen);
+        res = parseFloat(memory) + parseFloat(screen);
         break;
       case '-':
-        result = parseFloat(memory) - parseFloat(screen);
+        res = parseFloat(memory) - parseFloat(screen);
         break;
       case '*':
-        result = parseFloat(memory) * parseFloat(screen);
+        res = parseFloat(memory) * parseFloat(screen);
         break;
       case '/':
-        result = parseFloat(memory) / parseFloat(screen);
+        res = parseFloat(memory) / parseFloat(screen);
         break;
       default:
-        console.trace('Unexpected error occured');
+        console.log('calculate: Unexpected error occured');
     }
-    console.log(`${memory} ${op} ${screen} = ${result}`);
-    return(result);
+    console.log(`${memory} ${op} ${screen} = ${res}`);
+    return(res);
   }
 
   // Called by operation buttons (+, -, *, /, =, AC)
   const opClick = (value) => {
 
-    console.log('op: '+op+', opClick: '+value)
-
+    console.log('Previous operator: '+op+', Next operator: '+value);
+    let result = 0;
     // 'op' is the previous operator, 'value' is the currently pressed button operator
     if (value === 'AC'){
       // When 'AC' is pressed, both 'memory' and 'screen' are reset.
@@ -101,23 +104,26 @@ function Compulator() {
         console.log('cleared everything', memory, screen);
     }else if(op === '' || op === '=' || op === 'AC'){
       // If there is no previous operator, no calculation will be done
-      setMemory( value==='=' ? 0 : screen ) // the memory will be reset when '=' is pressed
-    } else{
+      console.log ('op: "", =, AC');
+      result = (value==='=' ? 0 : screen ) // the memory will be reset when '=' is pressed
+    } else {
       // The code to be run if there was a previous operator
-      let result = calculate();
-      console.log(`result is ${result}`);
+      console.log('should calculate now');
+      result = calculate();
+      console.log(`calculate says: ${result}`);
       if (isNaN(result)){ // to avoid NaN values (Happens when multiplying infinity by zero)
         result=0;
       }
-      setMemory(result);
-      setScreen(result);
     }
 
-    setOp(value); // set 'op' to the currently pressed operator button
-
+    console.log('result is: '+result);
+    setOp(value.toString()); // set 'op' to the currently pressed operator button
+    setMemory(result);
+    setScreen(result);
+    setTyping(false);
   }
 
-  // KeyboardEvents: still broken
+  // KeyboardEvents
   const KBNumPad = (key)=>{
     useEffect(() => {
       window.addEventListener("keydown", onDown)
@@ -127,14 +133,17 @@ function Compulator() {
     }, [key]);
   
     const onDown = event => {
-      console.log(event);
       // Checks which key is pressed; if the key is relevant, a click event is issued to the relevant button
       // Why 'click' events? Directly calling the numClick functions caused unpredictable behaviour in certain test cases.
+
+      console.log(event); // For debugging
 
       if (event.key === '.'){
         document.getElementById(`btn.`).click();
       } else if (event.key === 'Escape') {
         document.getElementById(`op5`).click();
+      } else if (event.key === 'Enter') {
+        document.getElementById(`op0`).click();
       } else if ((nums.toString()).includes(event.key)) {
         document.getElementById(`btn${event.key.toString()}`).click()
       } else if((ops.toString()).includes(event.key)){
