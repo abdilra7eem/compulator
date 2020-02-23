@@ -61,6 +61,7 @@ function Compulator() {
     }else if (value !== '.'){
       setScreen(value);
     }
+    setOp('');
   }
 
   // 'calculate' evaluates the operator and does the calculation
@@ -83,27 +84,28 @@ function Compulator() {
       default:
         console.trace('Unexpected error occured');
     }
-
-    console.log(`result = ${result}`);
+    console.log(`${memory} ${op} ${screen} = ${result}`);
     return(result);
   }
 
   // Called by operation buttons (+, -, *, /, =, AC)
   const opClick = (value) => {
 
-    console.log('opClick: '+value)
+    console.log('op: '+op+', opClick: '+value)
 
     // 'op' is the previous operator, 'value' is the currently pressed button operator
     if (value === 'AC'){
       // When 'AC' is pressed, both 'memory' and 'screen' are reset.
         setMemory(0);
         setScreen(0);
+        console.log('cleared everything', memory, screen);
     }else if(op === '' || op === '=' || op === 'AC'){
       // If there is no previous operator, no calculation will be done
       setMemory( value==='=' ? 0 : screen ) // the memory will be reset when '=' is pressed
     } else{
       // The code to be run if there was a previous operator
       let result = calculate();
+      console.log(`result is ${result}`);
       if (isNaN(result)){ // to avoid NaN values (Happens when multiplying infinity by zero)
         result=0;
       }
@@ -112,35 +114,39 @@ function Compulator() {
     }
 
     setOp(value); // set 'op' to the currently pressed operator button
+
   }
 
   // KeyboardEvents: still broken
-  function KBNumPad(key){
+  const KBNumPad = (key)=>{
     useEffect(() => {
       window.addEventListener("keydown", onDown)
       return () => {
           window.removeEventListener("keydown", onDown)
       }
-    }, [key])
+    }, [key]);
   
     const onDown = event => {
       console.log(event);
-      if((event.key).toString() === 'Enter'){
-        // console.log((event.key).toString() + " is Enter")
-        opClick('=');
+      // Checks which key is pressed; if the key is relevant, a click event is issued to the relevant button
+      // Why 'click' events? Directly calling the numClick functions caused unpredictable behaviour in certain test cases.
+
+      if (event.key === '.'){
+        document.getElementById(`btn.`).click();
+      } else if (event.key === 'Escape') {
+        document.getElementById(`op5`).click();
+      } else if ((nums.toString()).includes(event.key)) {
+        document.getElementById(`btn${event.key.toString()}`).click()
+      } else if((ops.toString()).includes(event.key)){
+        let opIndex = ops.indexOf(event.key);
+        document.getElementById(`op${opIndex}`).click();
+      } else {
+        console.log(`Irrelevant key ${event.key} pressed`);
       }
 
-      if((nums.toString()).includes(event.key)){
-        // console.log((event.key).toString() + " is a number")
-        numClick((event.key).toString());
-      }
-      
-      if((ops.toString()).includes(event.key)){
-        // console.log((event.key).toString() + " is an operator")
-        opClick((event.key).toString());
-      }
     }
   }
+
   KBNumPad();
   
   return (
