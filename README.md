@@ -1,3 +1,10 @@
+# compulator
+Simple calculator created with React functional components and React hooks
+This app was developed in one day, and may contain bugs, so be cautious when using it for anything servious.
+This app is provided as is, with no guarantee whatsoever, under LGPL v3.0 license.
+Please read the attached licence.
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
