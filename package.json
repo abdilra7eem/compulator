@@ -5,6 +5,7 @@
   "private": false,
   "author": "Abdalrahim G. Fakhouri",
   "license": "GNU Lesser General Public License (GPL) v3.0",
+  "homepage": "./",
   "repository": "github:abdilra7eem/compulator",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",

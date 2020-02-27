@@ -13,6 +13,10 @@ Compulator supports mouse, touch screen and keyboard. It uses functional compone
 - compulator.css
 
 ---
+## [Try it out](https://abdilra7eem.github.io/compulator/build/index.html)
+
+
+---
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
